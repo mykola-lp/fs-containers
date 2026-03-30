@@ -14,7 +14,7 @@ RUN npm test
 # STAGE 2: build the frontend
 FROM base AS build-stage
 
-ARG VITE_BACKEND_URL
+ARG VITE_BACKEND_URL=/api
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 RUN npm run build

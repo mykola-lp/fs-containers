@@ -1,6 +1,11 @@
 services:
   # Frontend React app
   app:
+    build:
+      context: ./todo-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
     image: todo-front
     restart: unless-stopped
     networks:
@@ -8,12 +13,15 @@ services:
 
   # Backend Express app
   backend:
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile
     image: todo-backend
     restart: unless-stopped
     environment:
-      - MONGO_URL=${MONGO_URL}
-      - REDIS_URL=${REDIS_URL}
-      - NODE_ENV=production
+      MONGO_URL: ${MONGO_URL}
+      REDIS_URL: ${REDIS_URL}
+      NODE_ENV: production
     depends_on:
       - mongo
       - redis

@@ -1,0 +1,18 @@
+> docker image pull hello-world
+Using default tag: latest
+latest: Pulling from library/hello-world
+Digest: sha256:85404b3c53951c3ff5d40de0972b1bb21fafa2e8daa235355baf44f33db9dbdd
+Status: Image is up to date for hello-world:latest
+docker.io/library/hello-world:latest
+
+> docker container run -it ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+817807f3c64e: Pull complete 
+Digest: sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c
+Status: Downloaded newer image for ubuntu:latest
+root@10bb2a8e2f50:/# mkdir -p /usr/src/app
+root@10bb2a8e2f50:/# touch /usr/src/app/index.js
+root@10bb2a8e2f50:/# exit
+
+> exit

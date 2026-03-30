@@ -1,0 +1,25 @@
+services:
+  app:
+    # image: hello-front-dev
+    build:
+      context: . # The context will pick this directory as the "build context"
+      dockerfile: dev.Dockerfile # This will simply tell which dockerfile to read
+    volumes:
+      - .:/usr/src/app # local todo-frontend TO /usr/src/app
+      - /usr/src/app/node_modules # not to overwritten local
+    ports:
+      - 3210:5173
+    environment:
+      - CHOKIDAR_USEPOLLING=true # to track changes to mounted volume (important for Vite)
+    container_name: hello-front-dev # This will name the container hello-front-dev
+
+
+# docker compose -f docker-compose.dev.yml up -d --build    
+
+# docker exec hello-front-dev npm install axios AND docker build agan
+
+# networking
+# docker compose -f docker-compose.dev.yml run debug-helper wget --header="Host: localhost" -O - http://hello-front-dev:5173
+
+# debug-helper:
+#   image: busybox

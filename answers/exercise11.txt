@@ -1,0 +1,42 @@
+> ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ docker ps
+CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS          PORTS                                           NAMES
+37abfa0f93d5   initialized-mongo   "docker-entrypoint.s…"   20 minutes ago   Up 20 minutes   0.0.0.0:3456->27017/tcp, [::]:3456->27017/tcp   todo-backend-mongo-1
+69b16bcec52b   redis:7             "docker-entrypoint.s…"   20 minutes ago   Up 20 minutes   0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp     todo-backend-redis-1
+
+> ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ docker exec -it todo-backend-redis-1 redis-cli
+127.0.0.1:6379> KEYS *
+1) "added_todos"
+127.0.0.1:6379> GET added_todos
+"1"
+127.0.0.1:6379> SET added_todos 9001
+OK
+127.0.0.1:6379> GET added_todos
+"9001"
+127.0.0.1:6379> exit
+
+> ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ curl http://localhost:3000/statistics
+
+{"added_todos":9001}
+
+>  ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ curl -X POST http://localhost:3000/todos \
+  -H "Content-Type: application/json" \
+  -d '{"text":"redis test"}'
+
+> ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ docker exec -it todo-backend-redis-1 redis-cli
+127.0.0.1:6379> GET added_todos
+"9002"
+127.0.0.1:6379> DEL added_todos
+(integer) 1
+127.0.0.1:6379> GET added_todos
+(nil)
+127.0.0.1:6379> exit
+
+> ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ curl -X POST http://localhost:3000/todos \
+  -H "Content-Type: application/json" \
+  -d '{"text":"after delete"}'
+
+{"text":"after delete","done":false,"_id":"69c254cf8ca27b63b009134d","__v":0}
+
+> ~/projects/full-stack-open/part12/fs-containers/todo-app/todo-backend  (main)$ curl hcurl http://localhost:3000/statistics
+
+{"added_todos":1}
